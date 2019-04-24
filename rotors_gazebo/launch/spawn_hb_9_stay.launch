@@ -1,0 +1,145 @@
+<launch>
+  <arg name="mav_name" default="hummingbird"/>
+  <arg name="world_name" default="9_target"/>
+  <arg name="enable_logging" default="false"/>
+  <arg name="enable_ground_truth" default="true"/>
+  <arg name="log_file" default="$(arg mav_name)"/>
+  <arg name="debug" default="false"/>
+  <arg name="gui" default="false"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="false"/>
+
+  <!-- The following line causes gzmsg and gzerr messages to be printed to the console
+      (even when Gazebo is started through roslaunch) -->
+  <arg name="verbose" default="false"/>
+
+  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
+  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find rotors_gazebo)/worlds/$(arg world_name).world"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="verbose" value="$(arg verbose)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+  </include>
+
+  <group ns="$(arg mav_name)_0">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_0" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_0"/>
+      <arg name="x" value="0.0"/>
+      <arg name="y" value="0.0"/>
+      <arg name="z" value="1.5"/>
+    </include>
+  </group>
+  <group ns="$(arg mav_name)_1">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_1" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_1"/>
+      <arg name="x" value="-5.0"/>
+      <arg name="y" value="5.0"/>
+      <arg name="z" value="1.5"/>
+    </include>
+  </group>
+  <group ns="$(arg mav_name)_2">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_2" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_2"/>
+      <arg name="x" value="0.0"/>
+      <arg name="y" value="5.0"/>
+      <arg name="z" value="1.5"/>
+    </include>
+  </group>
+  <group ns="$(arg mav_name)_3">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_3" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_3"/>
+      <arg name="x" value="5.0"/>
+      <arg name="y" value="5.0"/>
+      <arg name="z" value="1.5"/> 
+    </include>
+  </group>
+  <group ns="$(arg mav_name)_4">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_4" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_4"/>
+      <arg name="x" value="-5.0"/>
+      <arg name="y" value="0.0"/>
+      <arg name="z" value="1.5"/> 
+    </include>
+  </group>
+  <group ns="$(arg mav_name)_5">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_5" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_5"/>
+      <arg name="x" value="5.0"/>
+      <arg name="y" value="0.0"/>
+      <arg name="z" value="1.5"/> 
+    </include>
+  </group>
+  <group ns="$(arg mav_name)_6">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_6" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_6"/>
+      <arg name="x" value="-5.0"/>
+      <arg name="y" value="-5.0"/>
+      <arg name="z" value="1.5"/> 
+    </include>
+  </group>
+  <group ns="$(arg mav_name)_7">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_7" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_7"/>
+      <arg name="x" value="0.0"/>
+      <arg name="y" value="-5.0"/>
+      <arg name="z" value="1.5"/> 
+    </include>
+  </group>
+  <group ns="$(arg mav_name)_8">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_8" />
+      <arg name="model" value="$(find rotors_description)/urdf/$(arg mav_name)_base.xacro" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg log_file)_8"/>
+      <arg name="x" value="5.0"/>
+      <arg name="y" value="-5.0"/>
+      <arg name="z" value="1.5"/> 
+    </include>
+  </group>
+  
+</launch>
