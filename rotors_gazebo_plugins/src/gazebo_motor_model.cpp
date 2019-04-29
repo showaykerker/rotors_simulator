@@ -368,6 +368,25 @@ void GazeboMotorModel::WindSpeedCallback(GzWindSpeedMsgPtr& wind_speed_msg) {
   wind_speed_W_.z = wind_speed_msg->velocity().z();
 }
 
+double GazeboMotorModel::NormalizeAngle(double input){
+      // Constrain magnitude to be max 2*M_PI.
+      double wrapped = std::fmod(std::abs(input), 2*M_PI);
+      wrapped = std::copysign(wrapped, input);
+
+     // Constrain result to be element of [0, 2*pi).
+     // Set angle to zero if sufficiently close to 2*pi.
+     if(std::abs(wrapped - 2*M_PI) < 1e-8){
+       wrapped = 0;
+     }
+
+     // Ensure angle is positive.
+     if(wrapped < 0){
+        wrapped += 2*M_PI;
+     }
+
+     return wrapped;
+}
+
 void GazeboMotorModel::UpdateForcesAndMoments() {
   switch (motor_type_) {
     case (MotorType::kPosition): {
