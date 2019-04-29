@@ -31,17 +31,17 @@
   <build_depend>message_generation</build_depend>
 
   <!-- Dependencies needed after this package is compiled. -->
-  <run_depend>std_msgs</run_depend>
-  <run_depend>gazebo_msgs</run_depend>
-  <run_depend>gazebo_plugins</run_depend>
-  <run_depend>geometry_msgs</run_depend>
-  <run_depend>joy</run_depend>
-  <run_depend>mav_msgs</run_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>rotors_gazebo_plugins</run_depend>
-  <run_depend>sensor_msgs</run_depend>
-  <run_depend>xacro</run_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>gazebo_msgs</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>joy</exec_depend>
+  <exec_depend>mav_msgs</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rotors_gazebo_plugins</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
-  <run_depend>message_runtime</run_depend>
+  <exec_depend>message_runtime</exec_depend>
 
 </package>
