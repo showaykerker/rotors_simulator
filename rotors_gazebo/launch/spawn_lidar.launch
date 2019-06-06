@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<launch>
+  
+  <arg name="hz" default="10"/>
+  <arg name="min_range" default="0.5"/>
+  <arg name="max_range" default="130.0"/>
+  <arg name="noise" default="0.008"/>
+
+  <param name="robot_description"
+    command="$(find xacro)/xacro '$(find rotors_description)/urdf/lidar_base.xacro'
+    hz:=$(arg hz)
+    min_range:=$(arg min_range)
+    max_range:=$(arg max_range)
+    noise:=$(arg noise)
+    "
+  />
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model"
+   args="-param robot_description
+         -urdf
+         -x 0
+         -y 0
+         -z 0.5
+         -model lidar"
+   respawn="false" output="screen">
+  </node>
+
+  <!-- Combine joint values -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+</launch>
+
+<!-- xacro:VLP-16
+  parent="${namespace}/vi_sensor_link" 
+  name="${namespace}" 
+  topic="${namespace}/velodyne_points" 
+  hz="10" 
+  lasers="16" 
+  samples="1875" 
+  collision_range="0.3" 
+  min_range="0.5" 
+  max_range="130.0" 
+  noise="0.008" 
+  min_angle="-${pi}" 
+  max_angle="${pi}" 
+  vehicle_name="mav">
+</xacro:VLP-16-->

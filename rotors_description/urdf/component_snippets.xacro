@@ -21,7 +21,7 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:property name="pi" value="3.14159265359" />
-
+  
   <!-- Macro to add logging to a bag file. -->
   <xacro:macro name="bag_plugin_macro"
     params="namespace bag_file rotor_velocity_slowdown_sim wait_to_record_bag">
@@ -692,6 +692,91 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- ====================================================================  -->
+
+  <xacro:macro name="VLP16" params="namespace parent_link topic hz lasers samples collision_range min_range max_range noise min_angle max_angle vehicle_name mass *origin ">
+    <link name="${namespace}/lidar_link">
+
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.03585"/>
+        <geometry>
+          <cylinder radius="0.0516" length="0.0717"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <cylinder radius="0.0516" length="0.0717"/>
+        </geometry>
+        <!--material>
+          <script>Gazebo/Black</script>
+        </material-->
+        <material name='red'/>
+      </visual>
+
+      <inertial>
+        <mass value="${mass}"/>
+        <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+        <inertia ixx="2.1733e-6" ixy="0" ixz="0" iyy="2.1733e-6" iyz="0" izz="2.1733e-6"/>
+      </inertial>
+    </link>
+
+    <joint name="${namespace}_lidar_joint" type="fixed">
+      <xacro:insert_block name="origin" /> 
+      <parent link="${parent_link}"/>
+      <child link="${namespace}/lidar_link"/>
+    </joint>
+    
+    <!-- Gazebo requires the velodyne_gazebo_plugins package -->
+    <gazebo reference="${namespace}/lidar_VLP16_link">
+      <sensor type="ray" name="${namespace}_lidar_VLP16">
+        <alwaysOn>true</alwaysOn>
+        <always_on>true</always_on>
+        <updateRate>${hz}</updateRate>
+        <visualize>true</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>${samples}</samples>
+              <resolution>1</resolution>
+              <min_angle>${min_angle}</min_angle>
+              <max_angle>${max_angle}</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>${lasers}</samples>
+              <resolution>1</resolution>
+              <min_angle>-${15.0*pi/180.0}</min_angle>
+              <max_angle> ${15.0*pi/180.0}</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>${collision_range}</min>
+            <max>${max_range+1}</max>
+            <resolution>0.001</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>${noise}</stddev>
+          </noise>
+        </ray>
+        <plugin name="LaserPlugin" filename="librotors_g00azebo_lidar_plugin.so">
+          <robotNamespace>${namespace}</robotNamespace>
+          <topicName>${namespace}/${topic}</topicName>
+          <frameName>${vehicle_name}/${namespace}</frameName>
+          <min_range>${min_range}</min_range>
+          <max_range>${max_range}</max_range>
+          <gaussianNoise>${noise}</gaussianNoise>
+          <always_on>1</always_on>
+          <update_rate>20</update_rate>
+          <visualize>true</visualize>
+        </plugin>
+        
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
   <!-- VI-Sensor Macro -->
   <xacro:macro name="vi_sensor_macro" params="namespace parent_link enable_cameras enable_depth enable_ground_truth *origin">
     <!-- Vi Sensor Link -->
@@ -716,11 +801,13 @@
         <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
       </inertial>
     </link>
+
     <joint name="${namespace}_vi_sensor_joint" type="fixed">
       <xacro:insert_block name="origin" />
       <parent link="${parent_link}" />
       <child link="${namespace}/vi_sensor_link" />
     </joint>
+
     <!-- Cameras -->
     <xacro:if value="${enable_cameras}">
       <!-- Insert stereo pair. -->
@@ -793,6 +880,23 @@
       <origin xyz="0.015 0 0.0113" rpy="0 0 0" />
     </xacro:imu_plugin_macro>
   </xacro:macro>
+
+  <!-- ====================================================================  -->
+  <!-- Lidar Macro -->
+  <xacro:macro name="lidar_macro" params="namespace parent_link topic hz lasers samples collision_range min_range max_range noise min_angle max_angle vehicle_name mass *origin">
+    <xacro:VLP16
+      namespace="${namespace}" parent_link="${parent_link}" topic="${topic}" hz="${hz}" 
+      lasers="${lasers}" samples="${samples}" collision_range="${collision_range}" 
+      min_range="${min_range}" max_range="${max_range}" noise="${noise}" mass="${mass}"
+      min_angle="${min_angle}" max_angle="${max_angle}" vehicle_name="${vehicle_name}">
+      <origin xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0" />
+    </xacro:VLP16>
+  </xacro:macro>
+    
+    
+
+
+  <!-- ====================================================================  -->
 
   <xacro:macro name="ground_truth_imu_and_odometry" params="namespace parent_link">
     <!-- Mount an IMU providing ground truth. -->

@@ -23,14 +23,23 @@
   <!-- Instantiate the mav with a generic odometry sensor. -->
   <xacro:include filename="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
 
-  <!-- Mount a VI-sensor in front of the Firefly. -->
-  <xacro:vi_sensor_macro
-    namespace="${namespace}/vi_sensor"
-    parent_link="${namespace}/base_link"
-    enable_cameras="true"
-    enable_depth="true"
-    enable_ground_truth="true">
-    <origin xyz="0.1 0.0 -0.03" rpy="0.0 0.1 0.0" />
-  </xacro:vi_sensor_macro>
-  
+  <!-- Mount a Lidar. -->
+  <xacro:VLP16
+    namespace="${namespace}/lidar" 
+    parent_link="${namespace}/base_link" 
+    topic="velodyne_points" 
+    hz="10" 
+    lasers="16" 
+    samples="1875" 
+    collision_range="0.3" 
+    min_range="0.5" 
+    max_range="130.0" 
+    noise="0.008" 
+    min_angle="-${pi}" 
+    max_angle="${pi}" 
+    vehicle_name="mav"
+    mass="0.1">
+    <origin xyz="0.0 0.0 0.055" rpy="0.0 0.0 0.0" />
+  </xacro:VLP16>
+
 </robot>
