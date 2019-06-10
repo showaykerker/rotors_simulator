@@ -98,7 +98,7 @@
             <stddev>${noise_stddev}</stddev>
           </noise>
         </camera>
-        <plugin name="${namespace}_camera_${camera_suffix}_controller" filename="libgazebo_ros_camera.so">
+        <plugin name="${namespace}_camera_${camera_suffix}_controller" filename="librotors_gazebo_noisydepth_plugin.so">
           <robotNamespace>${namespace}</robotNamespace>
           <alwaysOn>true</alwaysOn>
           <updateRate>${frame_rate}</updateRate>
@@ -609,7 +609,7 @@
       horizontal_fov="1.3962634"
       image_width="752"
       image_height="480"
-      image_format="L8"
+      image_format="R8G8B8"
       min_distance="0.02"
       max_distance="${max_range}"
       noise_mean="0.0"
@@ -659,7 +659,7 @@
         <camera>
           <horizontal_fov>2</horizontal_fov>
           <image>
-            <format>L8</format>
+            <format>R8G8B8</format>
             <width>640</width>
             <height>480</height>
           </image>
@@ -693,6 +693,8 @@
   </xacro:macro>
 
   <!-- ====================================================================  -->
+
+
 
   <xacro:macro name="VLP16" params="namespace parent_link topic hz lasers samples collision_range min_range max_range noise min_angle max_angle vehicle_name mass *origin ">
     <link name="${namespace}/lidar_link">
@@ -827,6 +829,7 @@
       </xacro:vi_sensor_depth_macro>
     </xacro:if>
 
+
     <!-- Groundtruth -->
     <xacro:if value="${enable_ground_truth}">
       <!-- Odometry Sensor -->
@@ -893,7 +896,7 @@
     </xacro:VLP16>
   </xacro:macro>
     
-    
+  
 
 
   <!-- ====================================================================  -->
@@ -1038,5 +1041,8 @@
       reference_altitude="500.0">
     </xacro:mavlink_interface_macro>
   </xacro:macro>
+
+  
+
 
 </robot>
