@@ -585,8 +585,8 @@
       camera_suffix="${camera_suffix}"
       frame_rate="${frame_rate}"
       horizontal_fov="1.3962634"
-      image_width="96"
-      image_height="60"
+      image_width="752"
+      image_height="480"
       image_format="L8"
       min_distance="0.02"
       max_distance="30"
@@ -607,8 +607,8 @@
       parent_link="${parent_link}"
       frame_rate="${frame_rate}"
       horizontal_fov="1.3962634"
-      image_width="96"
-      image_height="60"
+      image_width="752"
+      image_height="480"
       image_format="R8G8B8"
       min_distance="0.02"
       max_distance="${max_range}"
@@ -660,8 +660,8 @@
           <horizontal_fov>2</horizontal_fov>
           <image>
             <format>L8</format>
-            <width>80</width>
-            <height>60</height>
+            <width>640</width>
+            <height>480</height>
           </image>
           <clip>
             <near>0.01</near>
