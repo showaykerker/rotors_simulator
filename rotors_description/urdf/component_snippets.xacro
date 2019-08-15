@@ -113,6 +113,7 @@
           <distortionT1>0.0</distortionT1>
           <distortionT2>0.0</distortionT2>
         </plugin>
+
       </sensor>
     </gazebo>
   </xacro:macro>
@@ -779,6 +780,42 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- Bumper Macro -->
+  <xacro:macro name="bumper_sensor" params="namespace parent_link">
+    <link name="${namespace}/bumper_link">
+      <!--collision name='${namespace}_collision'>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <sphere radius="0.01" />
+        </geometry>
+      </collision-->
+      <inertial>
+        <mass value="1e-6" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+    <joint name="${namespace}/bumper_joint" type="fixed">
+      <parent link="${parent_link}"/>
+      <child link="${namespace}/bumper_link"/>
+      <limit upper="0" lower="0" effort="0" velocity="0" />
+    </joint>
+    <gazebo reference="${namespace}/bumper_link">
+      <sensor name='${namespace}_collision_sensor' type='contact'>
+        <contact>
+          <collision>${namespace}/base_link_fixed_joint_lump__on_base_link_collision</collision>
+        </contact>
+        <plugin name='bumper_plugin' filename='libgazebo_ros_bumper.so'>
+          <alwatsOn>true</alwatsOn>
+          <updateRate>100</updateRate>
+          <bumperTopicName>collision</bumperTopicName>
+          <frameName>${namespace}/bumper_link</frameName>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+
   <!-- VI-Sensor Macro -->
   <xacro:macro name="vi_sensor_macro" params="namespace parent_link enable_cameras enable_depth enable_ground_truth *origin">
     <!-- Vi Sensor Link -->
@@ -798,7 +835,9 @@
       </visual>
 
       <inertial>
-        <mass value="0.13" />
+        <mass value="0.00013" />
+        <!--mass value="0.13" --> 
+        <!-- camera mass here -->
         <origin xyz="0 0 0" rpy="0 0 0" />
         <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
       </inertial>

@@ -66,7 +66,7 @@
         </geometry>
       </visual>
 
-      <collision>
+      <collision name="on_base_link">
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <box size="${body_width} ${body_width} ${body_height}" /> <!-- [m] [m] [m] -->
@@ -143,4 +143,7 @@
       <material>Gazebo/${color}</material>
     </gazebo>
   </xacro:macro>
+
+  <!-- add a collision inspector-->
+  <xacro:bumper_sensor namespace="${namespace}" parent_link="${namespace}/base_link"/>
 </robot>
