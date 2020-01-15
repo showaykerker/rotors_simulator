@@ -29,6 +29,65 @@ doi="10.1007/978-3-319-26054-9_23",
 url="http://dx.doi.org/10.1007/978-3-319-26054-9_23"
 }
 ```
+
+Difference from [ethz-asl/rotors_simulator](https://github.com/ethz-asl/rotors_simulator)
+-----------------------------------------------------------------------------------------
+#### Enable RGB Camera
+* Edit `rotors_simulator/rotors_description/urdf/component_snippets.xacro`
+1. Change .so file of the plugin
+```xml
+  <robot xmlns:xacro="http://ros.org/wiki/xacro">
+    ...
+    <!-- Macro to add a camera. -->
+    <xacro:macro name="camera_macro"
+      params="namespace parent_link camera_suffix frame_rate
+        horizontal_fov image_width image_height image_format min_distance
+        max_distance noise_mean noise_stddev enable_visual *geometry *origin">
+        ...
+        <gazebo reference="${namespace}/camera_${camera_suffix}_link">
+          <sensor type="camera" name="${namespace}_camera_${camera_suffix}">
+            ...
+            <plugin name="${namespace}_camera_${camera_suffix}_controller" filename="librotors_gazebo_noisydepth_plugin.so">
+              ...
+            </plugin>
+          </sensor>
+        </gazebo>
+      </xacro:macro>
+      ...
+  </robot>
+
+```
+2. Change image format to R8G8B8.
+```xml
+  
+  <robot xmlns:xacro="http://ros.org/wiki/xacro">
+    ...
+    
+    <!-- This affects topic ${namespace}/hummingbird/vi_sensor/left/image_raw -->
+    <!-- Macro to add a VI-sensor stereo camera. -->
+    <xacro:macro name="vi_sensor_stereo_camera_macro"
+       params="namespace parent_link frame_rate origin_offset_x baseline_y origin_offset_z max_range">
+      <xacro:stereo_camera_macro
+      ...
+      image_format="R8G8B8"
+      ...
+      />
+      ...
+    </xacro:macro>
+
+    ...
+
+  </robot>
+  
+```
+
+#### Change Image Size
+* Edit `rotors_simulator/rotors_description/urdf/component_snippets.xacro`
+* Simply replace all 480 -> 60, 752 -> 96, 640 -> 80'
+
+#### Added `rpyt` to `header/frame_id` of the `Actuators` messages that are published by roll_pitch_yawrate_throttle_controller_node.
+
+
 Installation Instructions - Ubuntu 16.04 with ROS Kinetic
 ---------------------------------------------------------
  1. Install and initialize ROS kinetic desktop full, additional ROS packages, catkin-tools, and wstool:
@@ -64,67 +123,6 @@ Installation Instructions - Ubuntu 16.04 with ROS Kinetic
    ```
 
  4. Add sourcing to your `.bashrc` file
-
-   ```
-   $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
-   $ source ~/.bashrc
-   ```
-
-Installation Instructions - Ubuntu 14.04 with ROS Indigo
---------------------------------------------------------
-
- 1. Install and initialize ROS indigo desktop full, additional ROS packages, catkin-tools, and wstool:
-
- ```
- $ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
- $ wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
- $ sudo apt-get update
- $ sudo apt-get install ros-indigo-desktop-full ros-indigo-joy ros-indigo-octomap-ros python-wstool python-catkin-tools protobuf-compiler libgoogle-glog-dev
- $ sudo rosdep init
- $ rosdep update
- $ source /opt/ros/indigo/setup.bash
- ```
- 2. If you don't have ROS workspace yet you can do so by
-
- ```
- $ mkdir -p ~/catkin_ws/src
- $ cd ~/catkin_ws/src
- $ catkin_init_workspace  # initialize your catkin workspace
- $ wstool init
- ```
- > **Note** for setups with multiple workspaces please refer to the official documentation at http://docs.ros.org/independent/api/rosinstall/html/ by replacing `rosws` by `wstool`.
- 3. Get the simulator and additional dependencies
-
- ```
- $ cd ~/catkin_ws/src
- $ git clone git@github.com:ethz-asl/rotors_simulator.git
- $ git clone git@github.com:ethz-asl/mav_comm.git
- ```
-  > **Note** On OS X you need to install yaml-cpp using Homebrew `brew install yaml-cpp`.
-
-  > **Note** if you want to use `wstool` you can replace the above commands with
-    ```
-    wstool set --git local_repo_name git@github.com:organization/repo_name.git
-    ```
-  > **Note** if you want to build and use the `gazebo_mavlink_interface` plugin you have to get MAVROS as an additional dependency from link below. Follow the installation instructions provided there and build all of its packages prior to building the rest of your workspace.
-    ```
-    https://github.com/mavlink/mavros
-    ```
- 4. Build your workspace with `python_catkin_tools` (therefore you need `python_catkin_tools`)
-
-   ```
-   $ cd ~/catkin_ws/
-   $ catkin init  # If you haven't done this before.
-   $ catkin build
-   ```
-   > **Note** if you are getting errors related to "future" package, you may need python future:
-    ```
-    sudo apt-get install python-pip
-    pip install --upgrade pip
-    pip install future
-    ```
-
- 5. Add sourcing to your `.bashrc` file
 
    ```
    $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc

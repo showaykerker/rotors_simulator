@@ -91,10 +91,12 @@ void RollPitchYawrateThrustControllerNode::OdometryCallback(const nav_msgs::Odom
   mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
 
   actuator_msg->angular_velocities.clear();
+  
   for (int i = 0; i < ref_rotor_velocities.size(); i++)
     actuator_msg->angular_velocities.push_back(ref_rotor_velocities[i]);
-  actuator_msg->header.stamp = odometry_msg->header.stamp;
 
+  actuator_msg->header.stamp = odometry_msg->header.stamp;
+  actuator_msg->header.frame_id = "rpyt";
   motor_velocity_reference_pub_.publish(actuator_msg);
 }
 
