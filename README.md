@@ -85,6 +85,10 @@ Difference from [ethz-asl/rotors_simulator](https://github.com/ethz-asl/rotors_s
 * Edit `rotors_simulator/rotors_description/urdf/component_snippets.xacro`
 * Simply replace all 480 -> 60, 752 -> 96, 640 -> 80'
 
+#### Change Field of View (fov)
+* Edit `rotors_simulator/rotors_description/urdf/component_snippets.xacro`
+* Set horizontal_fov to 2.26893
+
 #### Added `rpyt` to `header/frame_id` of the `Actuators` messages that are published by roll_pitch_yawrate_throttle_controller_node.
 
 
